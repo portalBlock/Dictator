@@ -35,7 +35,7 @@ public class Dictator extends JavaPlugin implements Listener{
             return;
         }
         List<String> messages = getConfig().getStringList(command);
-        if(e.getPlayer().isOp()||e.getPlayer().hasPermission("dictator.bypass."+command)){
+        if(e.getPlayer().isOp()||e.getPlayer().hasPermission("dictator.bypass."+command)||e.getPlayer().hasPermission("dictator.bypass")){
             return;
         }
         if(messages != null){
