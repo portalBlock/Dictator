@@ -24,6 +24,14 @@ public class Dictator extends JavaPlugin implements Listener{
     @EventHandler
     public void onCommandPreProccess(PlayerCommandPreprocessEvent e){
         String command = e.getMessage().replaceFirst("/", "").split(" ")[0];
+
+        if(command.equalsIgnoreCase("plugins")||command.equalsIgnoreCase("pl")||command.equalsIgnoreCase("plugin")){
+            command = "plugins";
+        }else if(command.equalsIgnoreCase("version")||command.equalsIgnoreCase("ver")){
+            command = "version";
+        }
+
+
         if(command.equalsIgnoreCase("reload")&&getConfig().getBoolean("blockReload")){
             List<String> pluginMsg = getConfig().getStringList("reload");
             if(pluginMsg.size() > 0){
