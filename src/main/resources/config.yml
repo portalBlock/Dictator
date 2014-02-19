@@ -1,4 +1,5 @@
 prefix: '&7[&aDictator&7] '
+blockReload: true
 plugins:
   - '&cOur server uses almost all custom or modified plugins!'
   - '&6If you have any questions, ask a staff member.'

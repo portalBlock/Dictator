@@ -3,7 +3,6 @@ package net.portalblock.dictator;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChatTabCompleteEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,23 +17,14 @@ public class Dictator extends JavaPlugin implements Listener{
     @Override
     public void onEnable(){
         getServer().getPluginManager().registerEvents(this, this);
+        saveResource("config.yml", false);
         prefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("prefix"));
-    }
-
-    @EventHandler
-    public void onTabCom(PlayerChatTabCompleteEvent e){
-        if(!e.getPlayer().isOp()){
-            for(String str : e.getTabCompletions()){
-                e.getTabCompletions().remove(str);
-            }
-            e.getTabCompletions().add("This feature is disabled!");
-        }
     }
 
     @EventHandler
     public void onCommandPreProccess(PlayerCommandPreprocessEvent e){
         String command = e.getMessage().replaceFirst("/", "").split(" ")[0];
-         if(command.equalsIgnoreCase("reload")){
+        if(command.equalsIgnoreCase("reload")&&getConfig().getBoolean("blockReload")){
             List<String> pluginMsg = getConfig().getStringList("reload");
             if(pluginMsg.size() > 0){
                 for(String msg : pluginMsg){
@@ -42,40 +32,18 @@ public class Dictator extends JavaPlugin implements Listener{
                 }
             }
             e.setCancelled(true);
+            return;
         }
-        if(!e.getPlayer().isOp()&&!e.getPlayer().hasPermission("dictator.bypass")){
-            if(command.equalsIgnoreCase("pl")||command.equalsIgnoreCase("plugins")||command.equalsIgnoreCase("plugin")){
-                List<String> pluginMsg = getConfig().getStringList("plugins");
-                if(pluginMsg.size() > 0){
-                    for(String msg : pluginMsg){
-                        e.getPlayer().sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', msg));
-                    }
-                }
+        List<String> messages = getConfig().getStringList(command);
+        if(e.getPlayer().isOp()||e.getPlayer().hasPermission("dictator.bypass."+command)){
+            return;
+        }
+        if(messages != null){
+            if(messages.size() > 0){
                 e.setCancelled(true);
-            }else if(command.equalsIgnoreCase("version")||command.equalsIgnoreCase("ver")){
-                List<String> pluginMsg = getConfig().getStringList("version");
-                if(pluginMsg.size() > 0){
-                    for(String msg : pluginMsg){
-                        e.getPlayer().sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', msg));
-                    }
+                for(String str : messages){
+                    e.getPlayer().sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', str));
                 }
-                e.setCancelled(true);
-            }else if(command.equalsIgnoreCase("op")){
-                List<String> pluginMsg = getConfig().getStringList("op");
-                if(pluginMsg.size() > 0){
-                    for(String msg : pluginMsg){
-                        e.getPlayer().sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', msg));
-                    }
-                }
-                e.setCancelled(true);
-            }else if(command.equalsIgnoreCase("deop")){
-                List<String> pluginMsg = getConfig().getStringList("deop");
-                if(pluginMsg.size() > 0){
-                    for(String msg : pluginMsg){
-                        e.getPlayer().sendMessage(prefix+ChatColor.translateAlternateColorCodes('&', msg));
-                    }
-                }
-                e.setCancelled(true);
             }
         }
     }
