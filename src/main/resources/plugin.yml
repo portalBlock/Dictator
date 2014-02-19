@@ -1,0 +1,4 @@
+name: Dictator
+main: net.portalblock.dictator.Dictator
+version: 1.0
+author: portalBlock

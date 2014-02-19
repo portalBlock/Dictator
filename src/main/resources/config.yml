@@ -1,0 +1,13 @@
+prefix: '&7[&aDictator&7] '
+plugins:
+  - '&cOur server uses almost all custom or modified plugins!'
+  - '&6If you have any questions, ask a staff member.'
+version:
+  - '&bWe proudly use Spigot by md_5!'
+op:
+  - '&4LOL &ctoo much security for noobs like you :D'
+deop:
+  - '&cAttempting to deop people is not a good idea, this has been reported!'
+reload:
+  - '&6Reloading is not a good idea and can only be done from console!'
+
